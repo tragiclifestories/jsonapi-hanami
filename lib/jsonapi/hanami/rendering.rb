@@ -26,7 +26,8 @@ module JSONAPI
         self.format = :jsonapi if @format.nil?
         return unless @_jsonapi.key?(:data)
         self.body = JSONAPI::Serializable::Renderer.render(@_jsonapi[:data],
-                                                           _jsonapi_params)
+                                                           _jsonapi_params).
+                                                           to_json
       end
 
       # NOTE(beauby): It might be worth factoring those methods out into a
@@ -46,7 +47,7 @@ module JSONAPI
                                                       _jsonapi_error_params)
         self.status = _jsonapi_error_status unless @_status
         self.format = :jsonapi if @format.nil?
-        self.body   = document
+        self.body   = document.to_json
       end
 
       def _jsonapi_error_status
